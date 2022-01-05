@@ -1,4 +1,8 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { personalForm } from '../redux/actions/index';
 
 import Input from '../components/Input';
 import Button from '../components/Button';
@@ -31,6 +35,7 @@ class PersonalForm extends Component {
       'Rio de Janeiro',
       'Minas Gerais',
       'Amapá', 'Amazonas', 'São Paulo', 'Ceará', 'Distrito Federal'];
+    const { personalDispatch } = this.props;
     return (
       <fieldset>
         <Input
@@ -81,14 +86,24 @@ class PersonalForm extends Component {
           name="estado"
           options={ states }
         />
-        <Button
-          type="button"
-          label="Enviar"
-          onClick={ () => console.log('Ao clicar, envie a informação do formulário') }
-        />
+        <Link to="/professionalform">
+          <Button
+            type="button"
+            label="Enviar"
+            onClick={ () => personalDispatch(this.state) }
+          />
+        </Link>
       </fieldset>
     );
   }
 }
 
-export default PersonalForm;
+PersonalForm.propTypes = {
+  personalDispatch: PropTypes.func.isRequired,
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  personalDispatch: (state) => dispatch(personalForm(state)),
+});
+
+export default connect(null, mapDispatchToProps)(PersonalForm);
